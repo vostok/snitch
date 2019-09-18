@@ -9,7 +9,15 @@ notests *default:
     - Vostok.Snitch/bin/Release/netstandard2.0/Vostok.Snitch.dll
 
   deps:
+    - vostok.logging.abstractions
+    - vostok.metrics
+    - vostok.hercules.consumers
+    - vostok.tracing.hercules
+    - vostok.hercules.client.abstractions
+    - vostok.tracing.abstractions
     - vostok.devtools
+    - vostok.commons.time/src
+    - vostok.commons.helpers/src
 
 full-build > notests:
   build:
