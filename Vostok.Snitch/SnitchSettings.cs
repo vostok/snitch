@@ -59,7 +59,7 @@ namespace Vostok.Snitch
 
         public TimeSpan DelayOnNoEvents { get; set; } = TimeSpan.FromSeconds(2);
 
-        public TimeSpan Period { get; set; } = 1.Minutes();
+        public TimeSpan Period { get; set; } = 10.Seconds();
 
         public TimeSpan Lag { get; set; } = 30.Seconds();
 
