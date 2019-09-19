@@ -27,7 +27,7 @@ namespace Vostok.Snitch.Processors
 
         public void Process(DateTime timestamp, IReadOnlyList<HerculesHttpSpan> spans)
         {
-            metricContext.Send(new MetricDataPoint(spans.Count / 10.0, "rpsTotal"));
+            metricContext.Send(new MetricDataPoint(spans.Count / 10.0, "rpsTotal") {Timestamp = timestamp});
         }
     }
 }

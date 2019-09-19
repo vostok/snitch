@@ -61,7 +61,7 @@ namespace Vostok.Snitch
 
         public TimeSpan Period { get; set; } = 10.Seconds();
 
-        public TimeSpan Lag { get; set; } = 30.Seconds();
+        public TimeSpan Lag { get; set; } = 60.Seconds();
 
         public TimeSpan MaximumEventBeforeNow { get; set; } = 1.Days();
 

@@ -31,5 +31,8 @@ namespace Vostok.Snitch
         }
 
         #endregion
+
+        public override string ToString() =>
+            $"{nameof(Environment)}: {Environment}, {nameof(Service)}: {Service}";
     }
 }

@@ -100,11 +100,11 @@ namespace Vostok.Snitch
 
         private async Task Restart(CancellationToken cancellationToken)
         {
-            leftCoordinates = await settings.LeftCoordinatesStorage.GetCurrentAsync().ConfigureAwait(false);
-            rightCoordinates = await settings.RightCoordinatesStorage.GetCurrentAsync().ConfigureAwait(false);
+            //leftCoordinates = await settings.LeftCoordinatesStorage.GetCurrentAsync().ConfigureAwait(false);
+            //rightCoordinates = await settings.RightCoordinatesStorage.GetCurrentAsync().ConfigureAwait(false);
 
             leftCoordinates = await streamReader.SeekToEndAsync(shardingSettings, cancellationToken).ConfigureAwait(false);
-            rightCoordinates = await streamReader.SeekToEndAsync(shardingSettings, cancellationToken).ConfigureAwait(false);
+            rightCoordinates = leftCoordinates;
 
             targets.Clear();
 
@@ -186,7 +186,7 @@ namespace Vostok.Snitch
             leftCoordinates = result.FirstActiveEventCoordinates ?? readResult.Payload.Next;
             rightCoordinates = readResult.Payload.Next;
 
-            await SaveProgress().ConfigureAwait(false);
+            //await SaveProgress().ConfigureAwait(false);
 
             LogProgress(result, readResult.Payload.Events.Count, eventsDropped);
 
