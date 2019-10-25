@@ -42,7 +42,7 @@ namespace Vostok.Snitch
                 settings.StreamName,
                 settings.StreamClient)
             {
-                EventsBatchSize = settings.EventsReadBatchSize,
+                EventsReadBatchSize = settings.EventsReadBatchSize,
                 EventsReadTimeout = settings.EventsReadTimeout
             };
 
@@ -116,7 +116,7 @@ namespace Vostok.Snitch
                 leftCoordinates,
                 rightCoordinates)
             {
-                EventsBatchSize = settings.EventsReadBatchSize,
+                EventsReadBatchSize = settings.EventsReadBatchSize,
                 EventsReadTimeout = settings.EventsReadTimeout
             };
 
