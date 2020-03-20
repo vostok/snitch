@@ -12,7 +12,7 @@ notests *default:
     - vostok.logging.abstractions
     - vostok.metrics
     - vostok.hercules.consumers
-    - vostok.tracing.hercules
+    - vostok.tracing.hercules@snitch
     - vostok.hercules.client.abstractions
     - vostok.tracing.abstractions
     - vostok.devtools
