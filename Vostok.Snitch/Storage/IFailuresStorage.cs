@@ -4,7 +4,7 @@ using Vostok.Tracing.Hercules.Models;
 
 namespace Vostok.Snitch.Storage
 {
-    public interface ISpansStorage
+    public interface IFailuresStorage
     {
         Task WriteAsync(List<HerculesHttpClientSpan> spans);
     }
