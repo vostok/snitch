@@ -33,7 +33,7 @@ namespace Vostok.Snitch.Helpers
             new BatchesStreamConsumer<HerculesHttpClientSpan>(
                 new BatchesStreamConsumerSettings<HerculesHttpClientSpan>(
                     streamName,
-                    () => environment.SecretConfigurationProvider.Get<SnitchSecretSettings>().HerculesApiKey,
+                    () => environment.SecretConfigurationProvider.Get<SnitchConsumerSecretSettings>().HerculesApiKey,
                     CreateStreamApiCluster(environment),
                     r => new HerculesHttpClientSpanReader(),
                     environment.HostExtensions.Get<IStreamCoordinatesStorage>(Constants.CoordinatesStorageKey),
@@ -56,7 +56,7 @@ namespace Vostok.Snitch.Helpers
         {
             var settings = new WindowedStreamConsumerSettings<HerculesHttpClientSpan, TopologyKey>(
                 streamName,
-                () => environment.SecretConfigurationProvider.Get<SnitchSecretSettings>().HerculesApiKey,
+                () => environment.SecretConfigurationProvider.Get<SnitchConsumerSecretSettings>().HerculesApiKey,
                 CreateStreamApiCluster(environment),
                 s => new TopologyKey(s.TargetEnvironment, s.TargetService),
                 s => s.EndTimestamp,
@@ -81,7 +81,7 @@ namespace Vostok.Snitch.Helpers
         {
             var settings = new WindowedStreamConsumerSettings<HerculesHttpClusterSpan, TopologyKey>(
                 streamName,
-                () => environment.SecretConfigurationProvider.Get<SnitchSecretSettings>().HerculesApiKey,
+                () => environment.SecretConfigurationProvider.Get<SnitchConsumerSecretSettings>().HerculesApiKey,
                 CreateStreamApiCluster(environment),
                 s => new TopologyKey(s.TargetEnvironment, s.TargetService),
                 s => s.EndTimestamp,
@@ -106,7 +106,7 @@ namespace Vostok.Snitch.Helpers
         {
             var settings = new WindowedStreamConsumerSettings<AggregatedEvent, TopologyKey>(
                 streamName,
-                () => environment.SecretConfigurationProvider.Get<SnitchSecretSettings>().HerculesApiKey,
+                () => environment.SecretConfigurationProvider.Get<SnitchConsumerSecretSettings>().HerculesApiKey,
                 CreateStreamApiCluster(environment),
                 s => new TopologyKey(s.TargetEnvironment, s.TargetService),
                 s => s.Timestamp,
@@ -125,7 +125,7 @@ namespace Vostok.Snitch.Helpers
         public static StreamBinaryWriter CreateStreamBinaryWriter(IVostokHostingEnvironment environment) =>
             new StreamBinaryWriter(
                 new StreamBinaryWriterSettings(
-                    () => environment.SecretConfigurationProvider.Get<SnitchSecretSettings>().HerculesApiKey,
+                    () => environment.SecretConfigurationProvider.Get<SnitchConsumerSecretSettings>().HerculesApiKey,
                     CreateGateCluster(environment))
                 {
                     MetricContext = environment.Metrics.Instance,

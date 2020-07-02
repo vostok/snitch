@@ -1,6 +1,6 @@
 ﻿namespace Vostok.Snitch.Configuration
 {
-    public class SnitchSecretSettings
+    public class SnitchConsumerSecretSettings
     {
         public string HerculesApiKey { get; set; }
     }
