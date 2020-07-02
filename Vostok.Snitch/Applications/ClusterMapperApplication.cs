@@ -8,40 +8,35 @@ using Vostok.Snitch.Core.Models;
 using Vostok.Snitch.Helpers;
 using Vostok.Snitch.Metrics;
 using Vostok.Snitch.Processing;
-using Vostok.Snitch.Storage;
 using Vostok.Tracing.Hercules.Models;
 
 namespace Vostok.Snitch.Applications
 {
-    [RequiresConfiguration(typeof(SnitchSettings))]
-    public class SnitchApplication : SnitchConsumerBase
+    [RequiresConfiguration(typeof(ClusterMapperSettings))]
+    public class ClusterMapperApplication : SnitchConsumerBase
     {
-        private WindowedStreamConsumer<HerculesHttpClientSpan, TopologyKey> consumer;
-        
+        private WindowedStreamConsumer<HerculesHttpClusterSpan, TopologyKey> consumer;
+
         public override Task InitializeAsync(IVostokHostingEnvironment environment)
         {
             ConsumersFactory.SetupEventsLimitMetric(environment, () => environment.ConfigurationProvider.Get<ConsumerSettings>().EventsLimitMetric);
 
-            var settings = environment.ConfigurationProvider.Get<SnitchSettings>();
-            var metricsSettings = new MetricsProcessorSettings(false);
+            var settings = environment.ConfigurationProvider.Get<ClusterMapperSettings>();
+            var metricsSettings = new MetricsProcessorSettings(true);
 
-            var (metricContext, eventsWriter) = MetricContextFactory.Create(environment);
+            var eventsWriter = ConsumersFactory.CreateStreamBinaryEventsWriter(environment, settings.TargetStream);
 
-            var statisticsCollector = environment.HostExtensions.Get<TopologyStatisticsCollector>();
-            var statisticsWriter = environment.HostExtensions.Get<ITopologyStatisticsWriter>();
-
-            var snitchProcessorSettings = new SnitchProcessorSettings(
-                metricContext,
-                statisticsCollector,
-                environment.Log.ForContext<SnitchProcessor>(),
+            var snitchProcessorSettings = new ClusterMapperProcessorSettings(
+                eventsWriter,
+                environment.Log.ForContext<ClusterMapperProcessor>(),
                 metricsSettings);
 
             consumer = ConsumersFactory.CreateWindowedStreamConsumer(
                 environment,
                 settings.SourceStream,
-                key => new SnitchProcessor(key, snitchProcessorSettings),
+                key => new ClusterMapperProcessor(key, snitchProcessorSettings),
                 eventsWriter,
-                statisticsWriter);
+                null);
 
             return Task.CompletedTask;
         }

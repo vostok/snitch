@@ -13,16 +13,16 @@ using Vostok.Tracing.Hercules.Models;
 
 namespace Vostok.Snitch.Applications
 {
-    [RequiresConfiguration(typeof(SnitchSettings))]
-    public class SnitchApplication : SnitchConsumerBase
+    [RequiresConfiguration(typeof(ClusterSnitchSettings))]
+    public class ClusterSnitchApplication : SnitchConsumerBase
     {
-        private WindowedStreamConsumer<HerculesHttpClientSpan, TopologyKey> consumer;
-        
+        private WindowedStreamConsumer<HerculesHttpClusterSpan, TopologyKey> consumer;
+
         public override Task InitializeAsync(IVostokHostingEnvironment environment)
         {
             ConsumersFactory.SetupEventsLimitMetric(environment, () => environment.ConfigurationProvider.Get<ConsumerSettings>().EventsLimitMetric);
 
-            var settings = environment.ConfigurationProvider.Get<SnitchSettings>();
+            var settings = environment.ConfigurationProvider.Get<ClusterSnitchSettings>();
             var metricsSettings = new MetricsProcessorSettings(false);
 
             var (metricContext, eventsWriter) = MetricContextFactory.Create(environment);
@@ -30,16 +30,16 @@ namespace Vostok.Snitch.Applications
             var statisticsCollector = environment.HostExtensions.Get<TopologyStatisticsCollector>();
             var statisticsWriter = environment.HostExtensions.Get<ITopologyStatisticsWriter>();
 
-            var snitchProcessorSettings = new SnitchProcessorSettings(
+            var snitchProcessorSettings = new ClusterSnitchProcessorSettings(
                 metricContext,
                 statisticsCollector,
-                environment.Log.ForContext<SnitchProcessor>(),
+                environment.Log.ForContext<ClusterSnitchProcessor>(),
                 metricsSettings);
 
             consumer = ConsumersFactory.CreateWindowedStreamConsumer(
                 environment,
                 settings.SourceStream,
-                key => new SnitchProcessor(key, snitchProcessorSettings),
+                key => new ClusterSnitchProcessor(key, snitchProcessorSettings),
                 eventsWriter,
                 statisticsWriter);
 

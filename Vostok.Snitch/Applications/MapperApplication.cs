@@ -13,7 +13,7 @@ using Vostok.Tracing.Hercules.Models;
 namespace Vostok.Snitch.Applications
 {
     [RequiresConfiguration(typeof(MapperSettings))]
-    public class MapperApplication : SnitchApplicationBase
+    public class MapperApplication : SnitchConsumerBase
     {
         private WindowedStreamConsumer<HerculesHttpClientSpan, TopologyKey> consumer;
 

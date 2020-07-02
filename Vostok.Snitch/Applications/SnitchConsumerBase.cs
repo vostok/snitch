@@ -6,7 +6,7 @@ using Vostok.Snitch.Configuration;
 namespace Vostok.Snitch.Applications
 {
     [RequiresSecretConfiguration(typeof(SnitchSecretSettings))]
-    public abstract class SnitchApplicationBase : IVostokApplication
+    public abstract class SnitchConsumerBase : IVostokApplication
     {
         public abstract Task InitializeAsync(IVostokHostingEnvironment environment);
 
