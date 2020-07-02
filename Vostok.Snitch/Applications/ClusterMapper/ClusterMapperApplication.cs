@@ -3,14 +3,12 @@ using Vostok.Hercules.Consumers;
 using Vostok.Hosting.Abstractions;
 using Vostok.Hosting.Abstractions.Requirements;
 using Vostok.Logging.Abstractions;
-using Vostok.Snitch.Configuration;
 using Vostok.Snitch.Core.Models;
 using Vostok.Snitch.Helpers;
 using Vostok.Snitch.Metrics;
-using Vostok.Snitch.Processing;
 using Vostok.Tracing.Hercules.Models;
 
-namespace Vostok.Snitch.Applications
+namespace Vostok.Snitch.Applications.ClusterMapper
 {
     [RequiresConfiguration(typeof(ClusterMapperSettings))]
     public class ClusterMapperApplication : SnitchConsumerBase

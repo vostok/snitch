@@ -3,41 +3,39 @@ using Vostok.Hercules.Consumers;
 using Vostok.Hosting.Abstractions;
 using Vostok.Hosting.Abstractions.Requirements;
 using Vostok.Logging.Abstractions;
-using Vostok.Snitch.Configuration;
+using Vostok.Snitch.AggregatedEvents;
 using Vostok.Snitch.Core.Models;
 using Vostok.Snitch.Helpers;
 using Vostok.Snitch.Metrics;
-using Vostok.Snitch.Processing;
 using Vostok.Snitch.Storages;
-using Vostok.Tracing.Hercules.Models;
 
-namespace Vostok.Snitch.Applications
+namespace Vostok.Snitch.Applications.Reducer
 {
-    [RequiresConfiguration(typeof(SnitchSettings))]
-    public class SnitchApplication : SnitchConsumerBase
+    [RequiresConfiguration(typeof(ReducerSettings))]
+    public class ReducerApplication : SnitchConsumerBase
     {
-        private WindowedStreamConsumer<HerculesHttpClientSpan, TopologyKey> consumer;
+        private WindowedStreamConsumer<AggregatedEvent, TopologyKey> consumer;
 
         protected override Task InitializeConsumerAsync(IVostokHostingEnvironment environment)
         {
-            var settings = environment.ConfigurationProvider.Get<SnitchSettings>();
-            var metricsSettings = new MetricsProcessorSettings(false);
+            var settings = environment.ConfigurationProvider.Get<ReducerSettings>();
+            var metricsSettings = new MetricsProcessorSettings(true);
 
             var (metricContext, eventsWriter) = MetricContextFactory.Create(environment);
 
             var statisticsCollector = environment.HostExtensions.Get<TopologyStatisticsCollector>();
             var statisticsWriter = environment.HostExtensions.Get<ITopologyStatisticsWriter>();
 
-            var snitchProcessorSettings = new SnitchProcessorSettings(
+            var snitchProcessorSettings = new ReducerProcessorSettings(
                 metricContext,
                 statisticsCollector,
-                environment.Log.ForContext<SnitchProcessor>(),
+                environment.Log.ForContext<ReducerProcessor>(),
                 metricsSettings);
 
             consumer = ConsumersFactory.CreateWindowedStreamConsumer(
                 environment,
                 settings.SourceStream,
-                key => new SnitchProcessor(key, snitchProcessorSettings),
+                key => new ReducerProcessor(key, snitchProcessorSettings),
                 eventsWriter,
                 statisticsWriter);
 

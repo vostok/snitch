@@ -4,15 +4,15 @@ using Vostok.Snitch.Core.Models;
 using Vostok.Snitch.Metrics;
 using Vostok.Tracing.Hercules.Models;
 
-namespace Vostok.Snitch.Processing
+namespace Vostok.Snitch.Applications.ClusterMapper
 {
-    internal class MapperProcessor : WindowedStreamConsumerSettings<HerculesHttpClientSpan, TopologyKey>.IWindow
+    internal class ClusterMapperProcessor : WindowedStreamConsumerSettings<HerculesHttpClusterSpan, TopologyKey>.IWindow
     {
         private readonly TopologyKey topology;
-        private readonly MapperProcessorSettings settings;
+        private readonly ClusterMapperProcessorSettings settings;
         private readonly MetricsProcessor metricsProcessor;
 
-        public MapperProcessor(TopologyKey topology, MapperProcessorSettings settings)
+        public ClusterMapperProcessor(TopologyKey topology, ClusterMapperProcessorSettings settings)
         {
             this.topology = topology;
             this.settings = settings;
@@ -20,8 +20,8 @@ namespace Vostok.Snitch.Processing
             metricsProcessor = new MetricsProcessor(topology, settings.MetricsSettings);
         }
 
-        public void Add(HerculesHttpClientSpan @event) =>
-            metricsProcessor.Add(@event);
+        public void Add(HerculesHttpClusterSpan span) =>
+            metricsProcessor.Add(span);
 
         public void Flush(DateTimeOffset timestamp) =>
             metricsProcessor.Write(settings.EventsWriter, settings.Log, timestamp);

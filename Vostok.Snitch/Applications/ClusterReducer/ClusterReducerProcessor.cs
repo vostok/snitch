@@ -4,7 +4,7 @@ using Vostok.Snitch.AggregatedEvents;
 using Vostok.Snitch.Core.Models;
 using Vostok.Snitch.Metrics;
 
-namespace Vostok.Snitch.Processing
+namespace Vostok.Snitch.Applications.ClusterReducer
 {
     internal class ClusterReducerProcessor : WindowedStreamConsumerSettings<AggregatedEvent, TopologyKey>.IWindow
     {

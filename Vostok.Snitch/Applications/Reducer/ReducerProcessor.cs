@@ -1,18 +1,18 @@
 ﻿using System;
 using Vostok.Hercules.Consumers;
+using Vostok.Snitch.AggregatedEvents;
 using Vostok.Snitch.Core.Models;
 using Vostok.Snitch.Metrics;
-using Vostok.Tracing.Hercules.Models;
 
-namespace Vostok.Snitch.Processing
+namespace Vostok.Snitch.Applications.Reducer
 {
-    internal class SnitchProcessor : WindowedStreamConsumerSettings<HerculesHttpClientSpan, TopologyKey>.IWindow
+    internal class ReducerProcessor : WindowedStreamConsumerSettings<AggregatedEvent, TopologyKey>.IWindow
     {
         private readonly TopologyKey topologyKey;
-        private readonly SnitchProcessorSettings settings;
+        private readonly ReducerProcessorSettings settings;
         private readonly MetricsProcessor metricsProcessor;
 
-        public SnitchProcessor(TopologyKey topologyKey, SnitchProcessorSettings settings)
+        public ReducerProcessor(TopologyKey topologyKey, ReducerProcessorSettings settings)
         {
             this.topologyKey = topologyKey;
             this.settings = settings;
@@ -20,7 +20,7 @@ namespace Vostok.Snitch.Processing
             metricsProcessor = new MetricsProcessor(topologyKey, settings.MetricsSettings);
         }
 
-        public void Add(HerculesHttpClientSpan @event) =>
+        public void Add(AggregatedEvent @event) =>
             metricsProcessor.Add(@event);
 
         public void Flush(DateTimeOffset timestamp) =>

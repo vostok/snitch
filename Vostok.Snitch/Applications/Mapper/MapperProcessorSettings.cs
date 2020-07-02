@@ -2,15 +2,15 @@
 using Vostok.Logging.Abstractions;
 using Vostok.Snitch.Metrics;
 
-namespace Vostok.Snitch.Processing
+namespace Vostok.Snitch.Applications.Mapper
 {
-    internal class ClusterMapperProcessorSettings
+    internal class MapperProcessorSettings
     {
         public readonly StreamBinaryEventsWriter EventsWriter;
         public readonly ILog Log;
         public readonly MetricsProcessorSettings MetricsSettings;
 
-        public ClusterMapperProcessorSettings(StreamBinaryEventsWriter eventsWriter, ILog log, MetricsProcessorSettings metricsSettings)
+        public MapperProcessorSettings(StreamBinaryEventsWriter eventsWriter, ILog log, MetricsProcessorSettings metricsSettings)
         {
             EventsWriter = eventsWriter;
             Log = log;

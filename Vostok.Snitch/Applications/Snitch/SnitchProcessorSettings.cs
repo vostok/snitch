@@ -2,16 +2,16 @@
 using Vostok.Metrics;
 using Vostok.Snitch.Metrics;
 
-namespace Vostok.Snitch.Processing
+namespace Vostok.Snitch.Applications.Snitch
 {
-    internal class ReducerProcessorSettings
+    internal class SnitchProcessorSettings
     {
         public readonly IMetricContext MetricContext;
         public readonly TopologyStatisticsCollector StatisticsCollector;
         public readonly ILog Log;
         public readonly MetricsProcessorSettings MetricsSettings;
 
-        public ReducerProcessorSettings(IMetricContext metricContext, TopologyStatisticsCollector statisticsCollector, ILog log, MetricsProcessorSettings metricsSettings)
+        public SnitchProcessorSettings(IMetricContext metricContext, TopologyStatisticsCollector statisticsCollector, ILog log, MetricsProcessorSettings metricsSettings)
         {
             MetricContext = metricContext;
             StatisticsCollector = statisticsCollector;

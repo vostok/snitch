@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Vostok.Configuration.Abstractions.Attributes;
 
-namespace Vostok.Snitch.Applications
+namespace Vostok.Snitch.Applications.ClusterReducer
 {
     [PublicAPI]
     public class ClusterReducerSettings

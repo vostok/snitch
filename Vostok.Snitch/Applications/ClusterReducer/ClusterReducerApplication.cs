@@ -4,14 +4,12 @@ using Vostok.Hosting.Abstractions;
 using Vostok.Hosting.Abstractions.Requirements;
 using Vostok.Logging.Abstractions;
 using Vostok.Snitch.AggregatedEvents;
-using Vostok.Snitch.Configuration;
 using Vostok.Snitch.Core.Models;
 using Vostok.Snitch.Helpers;
 using Vostok.Snitch.Metrics;
-using Vostok.Snitch.Processing;
 using Vostok.Snitch.Storages;
 
-namespace Vostok.Snitch.Applications
+namespace Vostok.Snitch.Applications.ClusterReducer
 {
     [RequiresConfiguration(typeof(ClusterReducerSettings))]
     public class ClusterReducerApplication : SnitchConsumerBase

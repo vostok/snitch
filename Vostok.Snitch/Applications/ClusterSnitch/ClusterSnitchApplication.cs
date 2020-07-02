@@ -3,41 +3,39 @@ using Vostok.Hercules.Consumers;
 using Vostok.Hosting.Abstractions;
 using Vostok.Hosting.Abstractions.Requirements;
 using Vostok.Logging.Abstractions;
-using Vostok.Snitch.AggregatedEvents;
-using Vostok.Snitch.Configuration;
 using Vostok.Snitch.Core.Models;
 using Vostok.Snitch.Helpers;
 using Vostok.Snitch.Metrics;
-using Vostok.Snitch.Processing;
 using Vostok.Snitch.Storages;
+using Vostok.Tracing.Hercules.Models;
 
-namespace Vostok.Snitch.Applications
+namespace Vostok.Snitch.Applications.ClusterSnitch
 {
-    [RequiresConfiguration(typeof(ReducerSettings))]
-    public class ReducerApplication : SnitchConsumerBase
+    [RequiresConfiguration(typeof(ClusterSnitchSettings))]
+    public class ClusterSnitchApplication : SnitchConsumerBase
     {
-        private WindowedStreamConsumer<AggregatedEvent, TopologyKey> consumer;
+        private WindowedStreamConsumer<HerculesHttpClusterSpan, TopologyKey> consumer;
 
         protected override Task InitializeConsumerAsync(IVostokHostingEnvironment environment)
         {
-            var settings = environment.ConfigurationProvider.Get<ReducerSettings>();
-            var metricsSettings = new MetricsProcessorSettings(true);
+            var settings = environment.ConfigurationProvider.Get<ClusterSnitchSettings>();
+            var metricsSettings = new MetricsProcessorSettings(false);
 
             var (metricContext, eventsWriter) = MetricContextFactory.Create(environment);
 
             var statisticsCollector = environment.HostExtensions.Get<TopologyStatisticsCollector>();
             var statisticsWriter = environment.HostExtensions.Get<ITopologyStatisticsWriter>();
 
-            var snitchProcessorSettings = new ReducerProcessorSettings(
+            var snitchProcessorSettings = new ClusterSnitchProcessorSettings(
                 metricContext,
                 statisticsCollector,
-                environment.Log.ForContext<ReducerProcessor>(),
+                environment.Log.ForContext<ClusterSnitchProcessor>(),
                 metricsSettings);
 
             consumer = ConsumersFactory.CreateWindowedStreamConsumer(
                 environment,
                 settings.SourceStream,
-                key => new ReducerProcessor(key, snitchProcessorSettings),
+                key => new ClusterSnitchProcessor(key, snitchProcessorSettings),
                 eventsWriter,
                 statisticsWriter);
 

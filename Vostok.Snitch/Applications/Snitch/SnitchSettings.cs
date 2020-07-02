@@ -1,15 +1,12 @@
 ﻿using JetBrains.Annotations;
 using Vostok.Configuration.Abstractions.Attributes;
 
-namespace Vostok.Snitch.Applications
+namespace Vostok.Snitch.Applications.Snitch
 {
     [PublicAPI]
-    public class ClusterMapperSettings
+    public class SnitchSettings
     {
         [Required]
         public string SourceStream { get; set; }
-
-        [Required]
-        public string TargetStream { get; set; }
     }
 }
