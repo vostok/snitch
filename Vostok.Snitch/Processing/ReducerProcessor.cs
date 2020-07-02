@@ -1,7 +1,7 @@
 ﻿using System;
 using Vostok.Hercules.Consumers;
+using Vostok.Snitch.AggregatedEvents;
 using Vostok.Snitch.Core.Models;
-using Vostok.Snitch.Events;
 using Vostok.Snitch.Metrics;
 
 namespace Vostok.Snitch.Processing

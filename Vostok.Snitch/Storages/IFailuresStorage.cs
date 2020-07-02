@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Vostok.Tracing.Hercules.Models;
 
-namespace Vostok.Snitch.Storage
+namespace Vostok.Snitch.Storages
 {
     public interface IFailuresStorage
     {

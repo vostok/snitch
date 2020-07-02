@@ -6,7 +6,7 @@ using Vostok.Metrics.Models;
 
 // ReSharper disable ParameterHidesMember
 
-namespace Vostok.Snitch.Events
+namespace Vostok.Snitch.AggregatedEvents
 {
     public class AggregatedEventReader : DummyHerculesTagsBuilder, IHerculesEventBuilder<AggregatedEvent>
     {

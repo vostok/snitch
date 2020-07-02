@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Vostok.Snitch.Storage
+namespace Vostok.Snitch.Storages
 {
     public interface ITopologyStatisticsWriter
     {

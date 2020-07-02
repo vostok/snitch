@@ -17,10 +17,8 @@ namespace Vostok.Snitch.Applications
     {
         private WindowedStreamConsumer<HerculesHttpClientSpan, TopologyKey> consumer;
 
-        public override Task InitializeAsync(IVostokHostingEnvironment environment)
+        protected override Task InitializeConsumerAsync(IVostokHostingEnvironment environment)
         {
-            ConsumersFactory.SetupEventsLimitMetric(environment, () => environment.ConfigurationProvider.Get<ConsumerSettings>().EventsLimitMetric);
-
             var settings = environment.ConfigurationProvider.Get<MapperSettings>();
             var metricsSettings = new MetricsProcessorSettings(true);
 
@@ -41,7 +39,7 @@ namespace Vostok.Snitch.Applications
             return Task.CompletedTask;
         }
 
-        public override Task RunAsync(IVostokHostingEnvironment environment) =>
+        protected override Task RunConsumerAsync(IVostokHostingEnvironment environment) =>
             consumer.RunAsync(environment.ShutdownToken);
     }
 }

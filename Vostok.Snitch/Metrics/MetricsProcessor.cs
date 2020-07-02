@@ -7,9 +7,9 @@ using Vostok.Hercules.Consumers;
 using Vostok.Logging.Abstractions;
 using Vostok.Metrics;
 using Vostok.Metrics.Models;
+using Vostok.Snitch.AggregatedEvents;
 using Vostok.Snitch.Configuration;
 using Vostok.Snitch.Core.Models;
-using Vostok.Snitch.Events;
 using Vostok.Snitch.Metrics.Models;
 using Vostok.Tracing.Hercules.Models;
 

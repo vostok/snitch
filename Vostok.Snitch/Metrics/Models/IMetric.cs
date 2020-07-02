@@ -1,5 +1,5 @@
 ﻿using Vostok.Metrics.Models;
-using Vostok.Snitch.Events;
+using Vostok.Snitch.AggregatedEvents;
 
 namespace Vostok.Snitch.Metrics.Models
 {

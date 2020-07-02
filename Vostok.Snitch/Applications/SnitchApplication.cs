@@ -8,7 +8,7 @@ using Vostok.Snitch.Core.Models;
 using Vostok.Snitch.Helpers;
 using Vostok.Snitch.Metrics;
 using Vostok.Snitch.Processing;
-using Vostok.Snitch.Storage;
+using Vostok.Snitch.Storages;
 using Vostok.Tracing.Hercules.Models;
 
 namespace Vostok.Snitch.Applications
@@ -17,11 +17,9 @@ namespace Vostok.Snitch.Applications
     public class SnitchApplication : SnitchConsumerBase
     {
         private WindowedStreamConsumer<HerculesHttpClientSpan, TopologyKey> consumer;
-        
-        public override Task InitializeAsync(IVostokHostingEnvironment environment)
-        {
-            ConsumersFactory.SetupEventsLimitMetric(environment, () => environment.ConfigurationProvider.Get<ConsumerSettings>().EventsLimitMetric);
 
+        protected override Task InitializeConsumerAsync(IVostokHostingEnvironment environment)
+        {
             var settings = environment.ConfigurationProvider.Get<SnitchSettings>();
             var metricsSettings = new MetricsProcessorSettings(false);
 
@@ -46,7 +44,7 @@ namespace Vostok.Snitch.Applications
             return Task.CompletedTask;
         }
 
-        public override Task RunAsync(IVostokHostingEnvironment environment) =>
+        protected override Task RunConsumerAsync(IVostokHostingEnvironment environment) =>
             consumer.RunAsync(environment.ShutdownToken);
     }
 }

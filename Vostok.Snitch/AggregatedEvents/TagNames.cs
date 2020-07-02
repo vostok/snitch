@@ -1,4 +1,4 @@
-﻿namespace Vostok.Snitch.Events
+﻿namespace Vostok.Snitch.AggregatedEvents
 {
     internal static class TagNames
     {

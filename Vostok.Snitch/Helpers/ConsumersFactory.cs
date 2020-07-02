@@ -15,10 +15,10 @@ using Vostok.Hercules.Client.Abstractions.Models;
 using Vostok.Hercules.Consumers;
 using Vostok.Hosting.Abstractions;
 using Vostok.Metrics.Primitives.Gauge;
+using Vostok.Snitch.AggregatedEvents;
 using Vostok.Snitch.Configuration;
 using Vostok.Snitch.Core.Models;
-using Vostok.Snitch.Events;
-using Vostok.Snitch.Storage;
+using Vostok.Snitch.Storages;
 using Vostok.Tracing.Hercules.Models;
 using Vostok.Tracing.Hercules.Readers;
 
@@ -170,15 +170,7 @@ namespace Vostok.Snitch.Helpers
                 configuration.DefaultRequestStrategy = Strategy.Sequential1;
             };
 
-        public static void SetupEventsLimitMetric(IVostokHostingEnvironment environment, Func<int?> limit)
-        {
-            if (environment.ApplicationReplicationInfo.InstanceIndex == 0)
-            {
-                environment.Metrics.Application.CreateFuncGauge("events", "type")
-                    .For("limit")
-                    .SetValueProvider(() => limit());
-            }
-        }
+        
 
         private static void SetupCommonSettings<T, TKey>(
             IVostokHostingEnvironment environment,

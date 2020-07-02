@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Vostok.Metrics.Models;
 using Vostok.Metrics.Primitives.Timer;
-using Vostok.Snitch.Events;
+using Vostok.Snitch.AggregatedEvents;
 
 namespace Vostok.Snitch.Metrics.Models
 {

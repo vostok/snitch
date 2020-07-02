@@ -1,6 +1,6 @@
 ﻿using Vostok.Hercules.Client.Abstractions.Events;
 
-namespace Vostok.Snitch.Events
+namespace Vostok.Snitch.AggregatedEvents
 {
     public static class AggregatedEventWriter
     {

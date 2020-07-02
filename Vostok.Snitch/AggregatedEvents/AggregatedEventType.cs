@@ -1,4 +1,4 @@
-﻿namespace Vostok.Snitch.Events
+﻿namespace Vostok.Snitch.AggregatedEvents
 {
     public enum AggregatedEventType : byte
     {
