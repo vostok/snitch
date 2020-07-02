@@ -10,6 +10,15 @@ namespace Vostok.Snitch
 {
     public static class Constants
     {
+        public const string CoordinatesStorageKey = "coordinatesStorage";
+        public const string LeftCoordinatesStorageKey = "leftCoordinatesStorage";
+        public const string RightCoordinatesStorageKey = "rightCoordinatesStorage";
+
+        // TODO(kungurtsev): remove
+        public const string HerculesStreamApi = "Hercules.StreamApi";
+        public const string HerculesEnvironment = "default";
+        public const string HerculesGate = "Hercules.Gate";
+
         public static readonly HistogramBuckets HistogramBuckets = CreateHistogramBuckets();
 
         public static readonly IReadOnlyList<DataSize> SizeBuckets = new[] {1.Megabytes()};

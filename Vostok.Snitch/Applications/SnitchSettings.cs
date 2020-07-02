@@ -8,8 +8,5 @@ namespace Vostok.Snitch.Applications
     {
         [Required]
         public string SourceStream { get; set; }
-
-        [Required]
-        public string ZooKeeperNode { get; set; }
     }
 }

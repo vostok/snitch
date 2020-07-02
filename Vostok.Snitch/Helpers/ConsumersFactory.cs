@@ -36,7 +36,7 @@ namespace Vostok.Snitch.Helpers
                     () => environment.SecretConfigurationProvider.Get<SnitchSecretSettings>().HerculesApiKey,
                     CreateStreamApiCluster(environment),
                     r => new HerculesHttpClientSpanReader(),
-                    environment.HostExtensions.Get<ISnitchStreamCoordinatesStorage>(),
+                    environment.HostExtensions.Get<IStreamCoordinatesStorage>(Constants.CoordinatesStorageKey),
                     () => new StreamShardingSettings(environment.ApplicationReplicationInfo.InstanceIndex, environment.ApplicationReplicationInfo.InstancesCount)
                 )
                 {
@@ -50,7 +50,6 @@ namespace Vostok.Snitch.Helpers
         public static WindowedStreamConsumer<HerculesHttpClientSpan, TopologyKey> CreateWindowedStreamConsumer(
             IVostokHostingEnvironment environment,
             string streamName,
-            string zooKeeperNode,
             Func<TopologyKey, WindowedStreamConsumerSettings<HerculesHttpClientSpan, TopologyKey>.IWindow> createWindow,
             StreamBinaryEventsWriter eventsWriter,
             ITopologyStatisticsWriter statisticsWriter)
@@ -63,8 +62,8 @@ namespace Vostok.Snitch.Helpers
                 s => s.EndTimestamp,
                 createWindow,
                 r => new HerculesHttpClientSpanReader(),
-                environment.HostExtensions.Get<ISnitchLeftStreamCoordinatesStorage>(),
-                environment.HostExtensions.Get<ISnitchRightStreamCoordinatesStorage>(),
+                environment.HostExtensions.Get<IStreamCoordinatesStorage>(Constants.LeftCoordinatesStorageKey),
+                environment.HostExtensions.Get<IStreamCoordinatesStorage>(Constants.RightCoordinatesStorageKey),
                 () => new StreamShardingSettings(environment.ApplicationReplicationInfo.InstanceIndex, environment.ApplicationReplicationInfo.InstancesCount)
             );
 
@@ -76,7 +75,6 @@ namespace Vostok.Snitch.Helpers
         public static WindowedStreamConsumer<HerculesHttpClusterSpan, TopologyKey> CreateWindowedStreamConsumer(
             IVostokHostingEnvironment environment,
             string streamName,
-            string zooKeeperNode,
             Func<TopologyKey, WindowedStreamConsumerSettings<HerculesHttpClusterSpan, TopologyKey>.IWindow> createWindow,
             StreamBinaryEventsWriter eventsWriter,
             ITopologyStatisticsWriter statisticsWriter)
@@ -89,8 +87,8 @@ namespace Vostok.Snitch.Helpers
                 s => s.EndTimestamp,
                 createWindow,
                 r => new HerculesHttpClusterSpanReader(),
-                environment.HostExtensions.Get<ISnitchLeftStreamCoordinatesStorage>(),
-                environment.HostExtensions.Get<ISnitchRightStreamCoordinatesStorage>(),
+                environment.HostExtensions.Get<IStreamCoordinatesStorage>(Constants.LeftCoordinatesStorageKey),
+                environment.HostExtensions.Get<IStreamCoordinatesStorage>(Constants.RightCoordinatesStorageKey),
                 () => new StreamShardingSettings(environment.ApplicationReplicationInfo.InstanceIndex, environment.ApplicationReplicationInfo.InstancesCount)
             );
 
@@ -102,7 +100,6 @@ namespace Vostok.Snitch.Helpers
         public static WindowedStreamConsumer<AggregatedEvent, TopologyKey> CreateWindowedStreamConsumer(
             IVostokHostingEnvironment environment,
             string streamName,
-            string zooKeeperNode,
             Func<TopologyKey, WindowedStreamConsumerSettings<AggregatedEvent, TopologyKey>.IWindow> createWindow,
             StreamBinaryEventsWriter eventsWriter,
             ITopologyStatisticsWriter statisticsWriter)
@@ -115,8 +112,8 @@ namespace Vostok.Snitch.Helpers
                 s => s.Timestamp,
                 createWindow,
                 r => new AggregatedEventReader(r),
-                environment.HostExtensions.Get<ISnitchLeftStreamCoordinatesStorage>(),
-                environment.HostExtensions.Get<ISnitchRightStreamCoordinatesStorage>(),
+                environment.HostExtensions.Get<IStreamCoordinatesStorage>(Constants.LeftCoordinatesStorageKey),
+                environment.HostExtensions.Get<IStreamCoordinatesStorage>(Constants.RightCoordinatesStorageKey),
                 () => new StreamShardingSettings(environment.ApplicationReplicationInfo.InstanceIndex, environment.ApplicationReplicationInfo.InstancesCount)
             );
 
@@ -151,6 +148,10 @@ namespace Vostok.Snitch.Helpers
         public static ClusterClientSetup ClusterClientAdditionalSetup(IVostokHostingEnvironment environment) =>
             configuration =>
             {
+                var service = configuration.TargetServiceName == "Hercules.Gate"
+                    ? environment.ConfigurationProvider.Get<HerculesSettings>().HerculesGateTopology
+                    : environment.ConfigurationProvider.Get<HerculesSettings>().HerculesStreamApiTopology;
+
                 configuration.SetupDistributedTracing(environment.Tracer);
                 configuration.SetupWeighedReplicaOrdering(
                     weightOrdering =>
@@ -163,8 +164,8 @@ namespace Vostok.Snitch.Helpers
                             () => environment.ConfigurationProvider.Get<HerculesSettings>().MinimumWeightForBoostingLocalDatacenter);
                         weightOrdering.SetupSnitchWeightModifier(
                             environment.ServiceLocator, 
-                            configuration.TargetEnvironment,
-                            configuration.TargetServiceName);
+                            service,
+                            environment.ConfigurationProvider.Get<HerculesSettings>().HerculesEnvironmentTopology);
                     });
                 configuration.DefaultRequestStrategy = Strategy.Sequential1;
             };

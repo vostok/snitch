@@ -39,7 +39,6 @@ namespace Vostok.Snitch.Applications
             consumer = ConsumersFactory.CreateWindowedStreamConsumer(
                 environment,
                 settings.SourceStream,
-                settings.ZooKeeperNode,
                 key => new SnitchProcessor(key, snitchProcessorSettings),
                 eventsWriter,
                 statisticsWriter);
