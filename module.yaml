@@ -9,6 +9,7 @@ notests *default:
     - Vostok.Snitch/bin/Release/netcoreapp3.1/Vostok.Snitch.dll
 
   deps:
+    - vostok.applications.scheduled
     - vostok.clusterclient.tracing
     - vostok.clusterclient.datacenters
     - vostok.clusterclient.snitch
